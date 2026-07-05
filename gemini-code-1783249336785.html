@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozy Ocean Café</title>
+    <style>
+        /* --- CSS STYLING --- */
+        :root {
+            --bg-deep-sea: #0d1b2a;
+            --bg-card: #1b263b;
+            --accent-glow: #00b4d8;
+            --accent-coral: #ff758f;
+            --text-light: #e0e1dd;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #1b263b 0%, #0d1b2a 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            color: var(--accent-glow);
+            text-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        /* Main Layout Grid */
+        .game-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding-bottom: 50px;
+        }
+
+        /* Dashboard & Clicker Section */
+        .clicker-section {
+            background: rgba(27, 38, 59, 0.6);
+            border: 2px solid var(--accent-glow);
+            border-radius: 15px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+        }
+
+        .stats-dashboard {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        #total-clams {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            display: block;
+            margin-top: 5px;
+        }
+
+        #cps-display {
+            color: var(--accent-glow);
+            font-weight: bold;
+        }
+
+        /* The Big Clickable Object */
+        .clicker-button {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #48cae4 0%, #0077b6 100%);
+            border: 5px solid #fff;
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.6);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            user-select: none;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+        }
+
+        .clicker-button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(0, 180, 216, 0.9);
+        }
+
+        .clicker-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Shop Section */
+        .shop-section {
+            background: rgba(27, 38, 59, 0.6);
+            border: 1px solid rgba(224, 225, 221, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+            max-height: 500px;
+        }
+
+        .shop-section h2 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--accent-glow);
+            padding-bottom: 10px;
+            color: var(--accent-glow);
+        }
+
+        .upgrade-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid rgba(224, 225, 221, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .upgrade-item:hover {
+            border-color: var(--accent-glow);
+        }
+
+        .upgrade-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .upgrade-info p {
+            margin: 0;
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        .buy-button {
+            background-color: var(--accent-coral);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, opacity 0.2s;
+        }
+
+        .buy-button:hover {
+            background-color: #ff4d6d;
+        }
+
+        .buy-button:disabled {
+            background-color: #555;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cozy Ocean Café</h1>
+        <p>Serve the finest deep-sea brews to local marine life.</p>
+    </header>
+
+    <div class="game-container">
+        
+        <section class="clicker-section">
+            <div class="stats-dashboard">
+                <div class="stat-box">Café Vault:<span id="total-clams">0 Clams</span></div>
+                <div class="stat-box">Passive Income: <span id="cps-display">0</span> CPS</div>
+            </div>
+            
+            <div class="clicker-button" id="click-target">☕</div>
+        </section>
+
+        <section class="shop-section">
+            <h2>Upgrades & Staff</h2>
+            <div id="shop-container"></div>
+        </section>
+
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT GAME LOGIC --- */
+
+        // 1. Game State Data
+        let gameState = {
+            clams: 0,
+            totalCPS: 0
+        };
+
+        // 2. Upgrade Configurations
+        const upgrades = [
+            {
+                id: 'espresso_machine',
+                name: 'Automated Sea-Espresso',
+                cost: 15,
+                cps: 0.5,
+                count: 0,
+                description: 'Bubbles keep the espresso pumping.'
+            },
+            {
+                id: 'otter_barista',
+                name: 'Sea Otter Barista',
+                cost: 100,
+                cps: 4,
+                count: 0,
+                description: 'Fast paws make fast lattes.'
+            },
+            {
+                id: 'octopus_chef',
+                name: 'Octopus Pastry Chef',
+                cost: 1100,
+                cps: 32,
+                count: 0,
+                description: 'Bakes 8 kelp-croissants at once.'
+            },
+            {
+                id: 'whale_delivery',
+                name: 'Whale Delivery Service',
+                cost: 12000,
+                cps: 260,
+                count: 0,
+                description: 'Mass distribution across the trenches.'
+            }
+        ];
+
+        // 3. DOM Elements Setup
+        const clamsDisplay = document.getElementById('total-clams');
+        const cpsDisplay = document.getElementById('cps-display');
+        const clickTarget = document.getElementById('click-target');
+        const shopContainer = document.getElementById('shop-container');
+
+        // 4. Initialize Shop UI
+        function createShopItems() {
+            shopContainer.innerHTML = ''; // Clear previous contents
+            upgrades.forEach((item, index) => {
+                const itemHTML = `
+                    <div class="upgrade-item" id="item-${item.id}">
+                        <div class="upgrade-info">
+                            <h3>${item.name} (<span id="count-${item.id}">0</span>)</h3>
+                            <p>${item.description}</p>
+                            <p><strong>+${item.cps} CPS</strong> | Cost: <span id="cost-${item.id}">${item.cost}</span> Clams</p>
+                        </div>
+                        <button class="buy-button" id="btn-${item.id}" onclick="buyUpgrade(${index})">Buy</button>
+                    </div>
+                `;
+                shopContainer.insertAdjacentHTML('beforeend', itemHTML);
+            });
+        }
+
+        // 5. Update UI Dashboards & Button States
+        function updateUI() {
+            // Update currency display
+            clamsDisplay.textContent = `${Math.floor(gameState.clams)} Clams`;
+            cpsDisplay.textContent = gameState.totalCPS.toFixed(1);
+
+            // Dynamically enable/disable upgrade purchase buttons based on funds
+            upgrades.forEach(item => {
+                const countElement = document.getElementById(`count-${item.id}`);
+                const costElement = document.getElementById(`cost-${item.id}`);
+                const button = document.getElementById(`btn-${item.id}`);
+                
+                if (countElement && costElement && button) {
+                    countElement.textContent = item.count;
+                    costElement.textContent = Math.floor(item.cost);
+                    button.disabled = gameState.clams < item.cost;
+                }
+            });
+        }
+
+        // 6. Handle Manual Clicks
+        clickTarget.addEventListener('click', () => {
+            gameState.clams += 1;
+            updateUI();
+        });
+
+        // 7. Purchase Logic
+        window.buyUpgrade = function(index) {
+            const item = upgrades[index];
+            if (gameState.clams >= item.cost) {
+                gameState.clams -= item.cost;
+                item.count++;
+                
+                // Increase the cost exponentially for the next purchase
+                item.cost = item.cost * 1.15;
+                
+                // Recalculate total passive income rate
+                recalculateCPS();
+                updateUI();
+            }
+        };
+
+        // 8. Calculate total Clams Per Second
+        function recalculateCPS() {
+            gameState.totalCPS = upgrades.reduce((sum, item) => sum + (item.count * item.cps), 0);
+        }
+
+        // 9. Core Game Loop (Runs 10 times a second for fluid visual tracking)
+        setInterval(() => {
+            if (gameState.totalCPS > 0) {
+                gameState.clams += (gameState.totalCPS / 10);
+                updateUI();
+            }
+        }, 100);
+
+        // Bootstrap the game on load
+        createShopItems();
+        updateUI();
+    </script>
+</body>
+</html>
